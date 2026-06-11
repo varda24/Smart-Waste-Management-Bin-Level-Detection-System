@@ -10,7 +10,15 @@ st.set_page_config(
     layout="wide"
 )
 
-df = pd.read_csv("data/bin_log.csv")
+import os
+
+csv_file = "data/bin_log.csv"
+
+if not os.path.exists(csv_file):
+    csv_file = "data/sample_bin_log.csv"
+
+df = pd.read_csv(csv_file)
+
 
 latest = df.iloc[-1]
 
