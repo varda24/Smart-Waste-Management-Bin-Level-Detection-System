@@ -1,33 +1,40 @@
 import streamlit as st
 import pandas as pd
+import os
 
-from streamlit_autorefresh import st_autorefresh
-
-st_autorefresh(interval=5000, key="refresh")
-
+# Page Config
 st.set_page_config(
     page_title="Smart Waste Management Dashboard",
     layout="wide"
 )
 
-import os
+# Load Data Safely
+if os.path.exists("data/bin_log.csv"):
+    df = pd.read_csv("data/bin_log.csv")
 
-csv_file = "data/bin_log.csv"
+elif os.path.exists("data/sample_bin_log.csv"):
+    df = pd.read_csv("data/sample_bin_log.csv")
 
-if not os.path.exists(csv_file):
-    csv_file = "data/sample_bin_log.csv"
+else:
+    df = pd.DataFrame({
+        "Timestamp": ["No Data"],
+        "Distance": [0],
+        "FillPercent": [0],
+        "Status": ["NO DATA"],
+        "Alert": ["NO DATA"]
+    })
 
-df = pd.read_csv(csv_file)
-
-
+# Latest Record
 latest = df.iloc[-1]
 
 fill = latest["FillPercent"]
 status = latest["Status"]
 alert = latest["Alert"]
 
+# Title
 st.title("🗑️ Smart Waste Management Dashboard")
 
+# Metrics
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
@@ -54,6 +61,7 @@ with col4:
         alert
     )
 
+# Status Alerts
 if fill < 50:
     st.success("✅ Bin Status: EMPTY")
 
@@ -63,21 +71,33 @@ elif fill < 80:
 else:
     st.error("🚨 Collection Required")
 
+# Trend Graph
 st.subheader("📈 Fill Level Trend")
 
 st.line_chart(df["FillPercent"])
 
+# Distribution Chart
 st.subheader("📊 Fill Percentage Distribution")
 
 chart_data = pd.DataFrame({
-    "Category": ["Empty", "Filled"],
-    "Value": [100-fill, fill]
+    "Category": ["Empty Space", "Filled Space"],
+    "Value": [100 - fill, fill]
 })
 
 st.bar_chart(
     chart_data.set_index("Category")
 )
 
+# Data Table
 st.subheader("📋 Historical Data")
 
-st.dataframe(df, use_container_width=True)
+st.dataframe(
+    df,
+    use_container_width=True
+)
+
+# Footer
+st.markdown("---")
+st.markdown(
+    "Smart Waste Management & Bin Level Detection System | ESP32 + HC-SR04 + Streamlit Dashboard"
+)
