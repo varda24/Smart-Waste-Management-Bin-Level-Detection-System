@@ -4,3 +4,4 @@ streamlit
 streamlit-autorefresh
 reportlab
 requests
+plotly
