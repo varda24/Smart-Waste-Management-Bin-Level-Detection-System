@@ -5,9 +5,6 @@
 🌐 **Live Dashboard:**
 https://smart-waste-management-bin-level-detection-system-cgj8tintr3yx.streamlit.app/
 
-🔗 **GitHub Repository:**
-https://github.com/varda24/Smart-Waste-Management-Bin-Level-Detection-System
-
 ---
 
 # 📌 Overview
