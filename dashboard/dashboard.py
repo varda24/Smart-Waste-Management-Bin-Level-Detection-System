@@ -1,146 +1,167 @@
-from streamlit_autorefresh import st_autorefresh
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-import os
-st_autorefresh(
-    interval=5000,
-    key="refresh"
-)
+from streamlit_autorefresh import st_autorefresh
+
 st.set_page_config(
     page_title="Smart Waste Management Dashboard",
     page_icon="🗑️",
     layout="wide"
 )
 
-# Load Data
-csv_file = "data/bin_log_backup.csv"
+st_autorefresh(interval=5000, key="refresh")
 
-if os.path.exists(csv_file):
-    df = pd.read_csv(csv_file)
-else:
-    st.error("Data file not found")
-    st.stop()
-
-latest = df.iloc[-1]
-
-fill = float(latest["FillPercent"])
-distance = latest["Distance"]
-status = latest["Status"]
-alert = latest["Alert"]
-timestamp = latest["Timestamp"]
-
-# Title
 st.title("🗑️ Smart Waste Management Dashboard")
 
-st.markdown("---")
+# Simulated Multiple Bins
+import os
 
-# KPI Cards
-c1, c2, c3, c4 = st.columns(4)
+csv_file = "data/multi_bin_data.csv"
 
-c1.metric(
-    "Fill Level",
-    f"{fill:.1f}%"
-)
+if os.path.exists(csv_file):
 
-c2.metric(
-    "Distance",
-    f"{distance} cm"
-)
-
-c3.metric(
-    "Status",
-    status
-)
-
-c4.metric(
-    "Total Readings",
-    len(df)
-)
-
-# Alert Section
-
-if fill >= 80:
-    st.error("🚨 COLLECTION REQUIRED")
-
-elif fill >= 50:
-    st.warning("⚠️ BIN REACHING CAPACITY")
+    bins = pd.read_csv(csv_file)
 
 else:
-    st.success("✅ BIN OPERATING NORMALLY")
+
+    bins = pd.DataFrame({
+        "Bin": ["Bin A", "Bin B", "Bin C"],
+        "FillPercent": [35, 68, 92]
+    })
+
+    def get_status(fill):
+
+        if fill < 50:
+            return "EMPTY"
+
+        elif fill < 80:
+            return "HALF FULL"
+
+        return "FULL"
+
+    bins["Status"] = bins["FillPercent"].apply(get_status)
+# Status Logic
+
+def get_status(fill):
+
+    if fill < 50:
+        return "EMPTY"
+
+    elif fill < 80:
+        return "HALF FULL"
+
+    return "FULL"
+
+bins["Status"] = bins["FillPercent"].apply(get_status)
+
+# KPI Cards
+
+c1, c2, c3 = st.columns(3)
+
+with c1:
+    st.metric(
+        "Total Bins",
+        len(bins)
+    )
+
+with c2:
+    st.metric(
+        "Bins Requiring Attention",
+        len(bins[bins["FillPercent"] >= 80])
+    )
+
+with c3:
+    st.metric(
+        "Average Fill %",
+        round(bins["FillPercent"].mean(), 1)
+    )
 
 st.markdown("---")
 
-# Gauge + Pie
-col1, col2 = st.columns(2)
+# Individual Bin Gauges
 
-with col1:
+st.subheader("📊 Bin Status Overview")
 
-    gauge = go.Figure(go.Indicator(
-        mode="gauge+number",
-        value=fill,
-        title={"text": "Current Fill Level (%)"},
-        gauge={
-            "axis": {"range": [0, 100]},
-            "bar": {"thickness": 0.3},
-            "steps": [
-                {"range": [0, 50]},
-                {"range": [50, 80]},
-                {"range": [80, 100]}
-            ]
-        }
-    ))
+cols = st.columns(3)
 
-    st.plotly_chart(
-        gauge,
-        use_container_width=True
-    )
+for i, row in enumerate(bins.itertuples()):
 
-with col2:
+    with cols[i]:
 
-    counts = df["Status"].value_counts()
+        gauge = go.Figure(
+            go.Indicator(
+                mode="gauge+number",
+                value=row.FillPercent,
+                title={"text": row.Bin},
+                gauge={
+                    "axis": {"range": [0, 100]}
+                }
+            )
+        )
 
-    pie = px.pie(
-        values=counts.values,
-        names=counts.index,
-        title="Status Distribution"
-    )
+        st.plotly_chart(
+            gauge,
+            use_container_width=True
+        )
 
-    st.plotly_chart(
-        pie,
-        use_container_width=True
-    )
+        st.write(
+            f"Status: {row.Status}"
+        )
 
-# Trend Chart
+# Fill Comparison
 
-st.subheader("📈 Fill Level Trend")
+st.subheader("📈 Fill Level Comparison")
 
-line = px.line(
-    df,
+bar = px.bar(
+    bins,
+    x="Bin",
     y="FillPercent",
-    x="Timestamp",
-    markers=True,
-    title="Waste Fill Level Over Time"
+    text="FillPercent",
+    title="Current Fill Level of All Bins"
 )
 
 st.plotly_chart(
-    line,
+    bar,
+    use_container_width=True
+)
+
+# Distribution
+
+st.subheader("📊 Status Distribution")
+
+pie = px.pie(
+    bins,
+    names="Status",
+    title="Waste Bin Status Distribution"
+)
+
+st.plotly_chart(
+    pie,
     use_container_width=True
 )
 
 # Data Table
 
-st.subheader("📋 Historical Records")
+st.subheader("📋 Bin Monitoring Table")
 
 st.dataframe(
-    df,
+    bins,
     use_container_width=True
 )
 
-# Footer
+# Alerts
 
-st.markdown("---")
-st.write(
-    f"Last Updated: {timestamp}"
-)
+critical = bins[bins["FillPercent"] >= 80]
+
+if len(critical) > 0:
+
+    st.error(
+        f"🚨 {len(critical)} bin(s) require collection."
+    )
+
+else:
+
+    st.success(
+        "✅ All bins operating normally."
+    )
