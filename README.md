@@ -213,4 +213,5 @@ This project demonstrates:
 
 ## 👨‍💻 Author
 **Varda Kunde**
+
 Developed as an IoT Project for Smart Waste Management and Smart City Applications.
