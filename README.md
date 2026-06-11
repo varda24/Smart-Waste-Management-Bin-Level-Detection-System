@@ -141,6 +141,21 @@ Smart-Waste-Management-Bin-Level-Detection-System/
 
 ---
 
+## Screenshots
+
+### Circuit Diagram
+
+![Circuit](images/circuit_diagram.png)
+
+### Dashboard
+
+![Dashboard](images/dashboard.png)
+
+### Analytics Graph
+
+![Analytics](images/analytics_graph.png)
+
+
 ## 📈 Sample Output
 
 ### Fill Percentage Formula
