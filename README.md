@@ -1,85 +1,150 @@
-# 🗑️ Smart Waste Management & Bin Level Detection System
+# 🗑️ Smart Waste Management & Multi-Bin Monitoring System
 
-## 📌 Overview
+## 🚀 Live Demo
 
-The Smart Waste Management & Bin Level Detection System is an IoT-based solution designed to monitor waste bin fill levels in real time. The system uses an HC-SR04 Ultrasonic Sensor connected to an ESP32 microcontroller to measure the distance between the sensor and waste inside the bin.
+🌐 **Live Dashboard:**
+https://smart-waste-management-bin-level-detection-system-cgj8tintr3yx.streamlit.app/
 
-Based on the measured distance, the system calculates the fill percentage and categorizes the bin status as:
-
-- EMPTY
-- HALF FULL
-- FULL
-
-Alerts are generated when the bin reaches a predefined threshold, enabling timely waste collection and reducing operational costs.
+🔗 **GitHub Repository:**
+https://github.com/varda24/Smart-Waste-Management-Bin-Level-Detection-System
 
 ---
 
-## 🚀 Problem Statement
+# 📌 Overview
 
-Traditional waste collection follows fixed schedules regardless of whether bins are full or empty. This leads to:
+The Smart Waste Management & Multi-Bin Monitoring System is an IoT-based solution designed to monitor waste bin levels and optimize waste collection operations.
 
-- Overflowing bins
-- Unnecessary collection trips
-- Increased fuel consumption
-- Higher operational costs
-- Poor waste management efficiency
+The project simulates smart waste bins using ESP32 and HC-SR04 Ultrasonic Sensor logic through Wokwi simulation and visualizes waste levels using a modern Streamlit dashboard.
 
-This project addresses these challenges through real-time monitoring and intelligent alert generation.
+The dashboard provides real-time monitoring of multiple bins, collection alerts, status analytics, and fill-level visualization.
 
 ---
 
-## 🎯 Objectives
+# 🎯 Problem Statement
 
-- Monitor waste bin levels in real time
-- Calculate fill percentage automatically
-- Generate collection alerts
-- Maintain historical records
-- Visualize data through dashboards
-- Generate monitoring reports
+Traditional waste collection follows fixed schedules regardless of whether bins are full or empty.
+
+This results in:
+
+* Overflowing waste bins
+* Unnecessary collection trips
+* Increased fuel consumption
+* Higher operational costs
+* Poor resource utilization
+
+This project provides a smart monitoring system that enables data-driven waste collection decisions.
 
 ---
 
-## 🏗️ System Architecture
+# 🏙️ Smart City Use Cases
+
+This solution can be used in:
+
+* Smart Cities
+* Municipal Corporations
+* Airport Waste Management
+* Railway Stations
+* Shopping Malls
+* Educational Campuses
+* Corporate Parks
+* Waste Collection Companies
+
+---
+
+# ⚙️ System Architecture
 
 ```text
-HC-SR04 Sensor
-       ↓
-ESP32 Controller
-       ↓
-Fill Level Calculation
-       ↓
-Alert Logic
-       ↓
-CSV Data Logging
-       ↓
+HC-SR04 Sensor (Simulated)
+            ↓
+ESP32 Controller Logic
+            ↓
+Bin Fill Level Calculation
+            ↓
+Status Classification
+            ↓
+Data Logging (CSV)
+            ↓
 Streamlit Dashboard
-       ↓
-PDF Report Generation
+            ↓
+Analytics & Collection Alerts
 ```
 
 ---
 
-## 🛠️ Technologies Used
+# 🛠️ Technologies Used
 
-### Hardware Simulation
+## IoT & Hardware
 
-- ESP32
-- HC-SR04 Ultrasonic Sensor
-- LED Indicators
-- Buzzer
-- Wokwi Simulator
+* ESP32
+* HC-SR04 Ultrasonic Sensor
+* LED Indicators
+* Buzzer
+* Wokwi Simulator
 
-### Software
+## Software
 
-- Python
-- Pandas
-- Streamlit
-- Matplotlib
-- ReportLab
+* Python
+* Pandas
+* Streamlit
+* Plotly
+* Matplotlib
+
+## Version Control
+
+* Git
+* GitHub
 
 ---
 
-## 📂 Project Structure
+# ✨ Features
+
+✅ Multi-Bin Monitoring
+
+✅ Fill Percentage Calculation
+
+✅ Bin Status Classification
+
+✅ Smart Collection Alerts
+
+✅ Interactive Dashboard
+
+✅ Gauge Visualization
+
+✅ Pie Chart Analytics
+
+✅ Fill-Level Comparison
+
+✅ Historical Data Tracking
+
+✅ Streamlit Deployment
+
+---
+
+# 📊 Dashboard Features
+
+## KPI Cards
+
+* Total Bins
+* Average Fill Percentage
+* Bins Requiring Collection
+
+## Visualizations
+
+* Gauge Meters
+* Fill-Level Comparison Chart
+* Status Distribution Pie Chart
+* Historical Monitoring Table
+
+## Alerts
+
+* EMPTY
+* HALF FULL
+* FULL
+* COLLECTION REQUIRED
+
+---
+
+# 📂 Project Structure
 
 ```text
 Smart-Waste-Management-Bin-Level-Detection-System/
@@ -88,17 +153,18 @@ Smart-Waste-Management-Bin-Level-Detection-System/
 │   ├── sketch.ino
 │   └── diagram.json
 │
-├── python_simulation/
-│   ├── bin_monitor.py
-│   ├── auto_monitor.py
-│   ├── plot_graph.py
-│   └── generate_report.py
-│
 ├── dashboard/
 │   └── dashboard.py
 │
+├── python_simulation/
+│   ├── bin_monitor.py
+│   ├── plot_graph.py
+│   ├── generate_report.py
+│   └── multi_bin_generator.py
+│
 ├── data/
-│   └── bin_log.csv
+│   ├── bin_log_backup.csv
+│   └── multi_bin_data.csv
 │
 ├── reports/
 │   ├── fill_level_graph.png
@@ -108,110 +174,116 @@ Smart-Waste-Management-Bin-Level-Detection-System/
 │
 ├── docs/
 │
-├── README.md
 ├── requirements.txt
+├── README.md
+└── .gitignore
 ```
 
 ---
 
-## ✨ Features
+# 📈 Bin Status Logic
 
-- Real-time bin level monitoring
-- Fill percentage calculation
-- Empty / Half Full / Full classification
-- LED-based visual alerts
-- Buzzer-based audio alerts
-- Automatic data logging
-- Historical data tracking
-- Streamlit dashboard
-- PDF report generation
-- IoT simulation using Wokwi
+| Fill Percentage | Status    |
+| --------------- | --------- |
+| 0 - 49%         | EMPTY     |
+| 50 - 79%        | HALF FULL |
+| 80 - 100%       | FULL      |
 
 ---
 
-## 📊 Dashboard Features
+# 📊 Sample Dashboard Metrics
 
-- Distance Monitoring
-- Fill Percentage Tracking
-- Bin Status Monitoring
-- Alert Notifications
-- Historical Data Table
-- Fill Level Trend Graph
-- Fill Distribution Analysis
+| Bin   | Fill Level | Status    |
+| ----- | ---------- | --------- |
+| Bin A | 35%        | EMPTY     |
+| Bin B | 68%        | HALF FULL |
+| Bin C | 92%        | FULL      |
 
 ---
 
-## Screenshots
+# 🔔 Alert Logic
 
-### Circuit Diagram
+```text
+EMPTY      → No Alert
 
-![Circuit](images/Circuit_Diagram.png)
+HALF FULL  → Monitor
 
-### Dashboard
+FULL       → Collection Required
+```
 
-![Dashboard](images/Dashboard.png)
+---
 
-### Analytics Graph
+# 📷 Screenshots
+
+Add screenshots in the images folder and reference them here:
+
+### Wokwi Circuit Diagram
+
+![Circuit Diagram](images/circuit_diagram.png)
+
+### Dashboard Overview
+
+![Dashboard](images/dashboard.png)
+
+### Analytics
 
 ![Analytics](images/analytics_graph.png)
 
+---
 
-## 📈 Sample Output
+# 🚀 How To Run
 
-### Fill Percentage Formula
+## Install Dependencies
 
-Fill Percentage = ((Bin Height - Distance) / Bin Height) × 100
+```bash
+pip install -r requirements.txt
+```
 
-Example:
+## Run Dashboard
 
-Bin Height = 30 cm
+```bash
+streamlit run dashboard/dashboard.py
+```
 
-Distance = 15 cm
+## Run Multi-Bin Generator
 
-Fill Percentage = 50%
-
-Status = HALF FULL
+```bash
+python python_simulation/multi_bin_generator.py
+```
 
 ---
 
-## 📄 Generated Reports
-
-The system generates:
-
-- CSV Logs
-- Fill Level Analytics Graphs
-- PDF Monitoring Reports
-
----
-
-## 🔮 Future Enhancements
-
-- ThingSpeak Integration
-- MQTT Communication
-- Node-RED Dashboard
-- Multiple Smart Bins
-- GPS-enabled Collection Routes
-- AI-based Waste Prediction
-- Mobile Application Integration
-
----
-
-## 🎓 Learning Outcomes
+# 🎓 Learning Outcomes
 
 This project demonstrates:
 
-- IoT Fundamentals
-- Sensor Integration
-- ESP32 Programming
-- Data Logging
-- Dashboard Development
-- Data Visualization
-- Report Generation
-- Smart City Applications
+* IoT Fundamentals
+* ESP32 Programming
+* Sensor Integration
+* Data Logging
+* Dashboard Development
+* Data Visualization
+* Smart City Applications
+* Git & GitHub Workflow
+* Streamlit Deployment
 
 ---
 
-## 👨‍💻 Author
-**Varda Kunde**
+# 🔮 Future Improvements
 
-Developed as an IoT Project for Smart Waste Management and Smart City Applications.
+* MQTT Integration
+* ThingSpeak Cloud Connectivity
+* Node-RED Dashboard
+* Mobile Application
+* GPS-Based Collection Routing
+* AI-Based Waste Collection Prediction
+
+---
+
+# 👨‍💻 Author
+
+**Varda**
+
+CSE (AIML) Student
+
+IoT Course Project – Smart Waste Management & Multi-Bin Monitoring System
